@@ -17,6 +17,7 @@ const PoliticianCard = React.memo(({ name, image, position, biography }) => {
 function App() {
   const [politicians, setPoliticians] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedPosition, setSelectedPosition] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3333/politicians")
@@ -24,6 +25,16 @@ function App() {
       .then((data) => setPoliticians(data))
       .catch((error) => console.error(error));
   }, []);
+
+  const positions = useMemo(() => {
+    const uniquePositions = [];
+    politicians.forEach((politician) => {
+      if (!uniquePositions.includes(politician.position)) {
+        uniquePositions.push(politician.position);
+      }
+    });
+    return uniquePositions;
+  }, [politicians]);
 
   const filteredPoliticians = useMemo(() => {
     return politicians.filter((politicians) => {
@@ -33,14 +44,27 @@ function App() {
       const IsInBio = politicians.biography
         .toLowerCase()
         .includes(search.toLowerCase());
-      return IsInName || IsInBio;
+      const IsPositionValid =
+        selectedPosition === "" || politicians.position === selectedPosition;
+      return (IsInName || IsInBio) && IsPositionValid;
     });
-  }, [politicians, search]);
+  }, [politicians, search, selectedPosition]);
 
   return (
     <>
       <div className="header-container">
         <h1>Lista politici</h1>
+        <select
+          value={selectedPosition}
+          onChange={(e) => setSelectedPosition(e.target.value)}
+        >
+          <option value="">Tutte le posizioni</option>
+          {positions.map((position, index) => (
+            <option key={index} value={position}>
+              {position}
+            </option>
+          ))}
+        </select>
         <input
           type="text"
           placeholder="Cerca politico..."

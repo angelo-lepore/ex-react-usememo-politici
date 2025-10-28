@@ -51,7 +51,7 @@ Clicca qui per la guida su come installare il Server API Locale!
 
 **_Obiettivo:_** Se la lista filtrata cambia, **_solo le nuove card devono essere renderizzate_**, mentre le altre rimangono in memoria senza essere ridisegnate.
 
-🎯 Bonus: Filtrare anche per posizione politica (position)
+## 🎯 Bonus: Filtrare anche per posizione politica (position)
 
 1. Creare un array derivato che contiene **_tutte le posizioni politiche (position) disponibili_**, ma **_senza duplicati_**.
 
